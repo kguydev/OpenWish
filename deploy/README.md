@@ -11,7 +11,7 @@ push to `main`, one job per folder. A failed job leaves the others running.
 ## How the build finds the config
 
 The Vite Cloudflare plugin reads the Wrangler config at build time. It takes
-the path from `WRANGLER_CONFIG`; without it, it falls back to
+the path from `WRANGLER_CONFIG`. Without it, a build uses
 `apps/web/wrangler.jsonc`, as upstream does. The build writes the deployable
 config to `apps/web/dist/server/wrangler.json` and a pointer to it in
 `apps/web/.wrangler/deploy/config.json`. A plain `wrangler deploy` run in
@@ -20,6 +20,32 @@ config to `apps/web/dist/server/wrangler.json` and a pointer to it in
 Don't run `wrangler deploy --config deploy/<name>/wrangler.jsonc`. That skips
 the Vite build and fails to bundle TanStack Start. Commands that don't build,
 such as `d1 migrations` and `secret put`, take the folder's config directly.
+
+## Local development
+
+Local development needs no Cloudflare account and no config from this folder:
+
+```bash
+cd apps/web
+cp .dev.vars.example .dev.vars   # set OPENWISH_BOOTSTRAP_TOKEN to create projects
+pnpm dev                         # http://localhost:5173
+```
+
+When `WRANGLER_CONFIG` is unset and there is no `apps/web/wrangler.jsonc`,
+`vite dev` uses `apps/web/wrangler.example.jsonc`. Its placeholder IDs are
+fine there, because D1, R2, KV and the Durable Object all run in Miniflare,
+with state in `apps/web/.wrangler/state`. To get a project and its API key:
+
+```bash
+curl -X POST localhost:5173/api/admin/projects \
+  -H 'content-type: application/json' \
+  -H "x-openwish-bootstrap-token: <OPENWISH_BOOTSTRAP_TOKEN>" \
+  -d '{"name":"Dev","slug":"dev"}'
+```
+
+Don't set `WRANGLER_CONFIG` to a deployment's config for `pnpm dev`. Dev
+stays local either way, but it then uses that deployment's hostnames and
+passkey RP ID.
 
 ## Deploy one by hand
 

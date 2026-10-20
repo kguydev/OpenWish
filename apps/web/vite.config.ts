@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import { existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { devtools } from '@tanstack/devtools-vite'
 
@@ -8,8 +9,16 @@ import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { cloudflare } from '@cloudflare/vite-plugin'
 
-const config = defineConfig(({ mode }) => {
+const config = defineConfig(({ command, mode }) => {
   const isTest = mode === 'test'
+  // Deployments set WRANGLER_CONFIG (see deploy/README.md). Without it, use
+  // wrangler.jsonc, and let `vite dev` fall back to the example config so a
+  // fresh clone runs locally with no Cloudflare account.
+  const wranglerConfig =
+    process.env.WRANGLER_CONFIG ??
+    (command === 'serve' && !existsSync(new URL('./wrangler.jsonc', import.meta.url))
+      ? fileURLToPath(new URL('./wrangler.example.jsonc', import.meta.url))
+      : undefined)
 
   return {
     test: { server: { deps: { inline: ['@cloudflare/workers-oauth-provider'] } } },
@@ -27,7 +36,7 @@ const config = defineConfig(({ mode }) => {
         : undefined,
     },
     plugins: [
-      ...(isTest ? [] : [devtools(), cloudflare({ configPath: process.env.WRANGLER_CONFIG, viteEnvironment: { name: 'ssr' } }), tanstackStart()]),
+      ...(isTest ? [] : [devtools(), cloudflare({ configPath: wranglerConfig, viteEnvironment: { name: 'ssr' } }), tanstackStart()]),
       tailwindcss(),
       viteReact(),
     ],

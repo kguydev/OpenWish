@@ -29,7 +29,9 @@ extension Api {
     static func send<T: Decodable>(request: URLRequest, completionHandler: @escaping (ApiResult<T, ApiError>) -> Void) {
         let method = request.httpMethod ?? ""
 
+        #if DEBUG
         print("🌐 API | \(method) | \(request.url?.absoluteString ?? "nil")")
+        #endif
 
         URLSession.shared.dataTask(with: request) { data, resp, error in
             // Early return in case of error.
@@ -73,7 +75,9 @@ extension Api {
     static func send<T: Decodable>(request: URLRequest) async -> ApiResult<T, ApiError> {
         let method = request.httpMethod ?? ""
 
+        #if DEBUG
         print("🌐 API | \(method) | \(request.url?.absoluteString ?? "nil")")
+        #endif
 
         do {
             let (data, _) = try await URLSession.shared.data(for: request)

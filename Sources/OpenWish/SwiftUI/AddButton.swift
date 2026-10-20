@@ -39,7 +39,8 @@ struct AddButton: View {
             .frame(width: size.width, height: size.height)
             .background(OpenWish.theme.primaryColor)
             .clipShape(.circle)
-            .shadow(color: .black.opacity(0.33), radius: 5, x: 0, y: 5)
+            .shadow(color: .black.opacity(0.15), radius: 2, x: 0, y: 1)
+            .accessibilityLabel(Text(OpenWish.config.localization.addFeatureRequest))
         #else
             VStack {
                 Image(systemName: "plus")
@@ -48,7 +49,9 @@ struct AddButton: View {
             .frame(width: size.width, height: size.height)
             .background(OpenWish.theme.primaryColor)
             .clipShape(.circle)
-            .shadow(color: .black.opacity(1/4), radius: 3, x: 0, y: 3)
+            .shadow(color: .black.opacity(0.15), radius: 2, x: 0, y: 1)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(Text(OpenWish.config.localization.addFeatureRequest))
         #endif
     }
 

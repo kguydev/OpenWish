@@ -14,7 +14,7 @@ extension Configuration {
         /// Hides/Shows the segmented control to switch between 'Requested' and 'Implemented'.
         public var display: Display = .show
 
-        public var defaultTextColor = Theme.Scheme(light: .black, dark: .white)
+        public var defaultTextColor = Theme.Scheme(light: .primary, dark: .primary)
 
         public var activeTextColor = Theme.Scheme(light: .white, dark: .white)
     }

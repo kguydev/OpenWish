@@ -100,6 +100,16 @@ extension Configuration {
 
         public var refreshing: String
 
+        public var addFeatureRequest: String
+
+        public var couldNotLoadFeatureRequests: String
+
+        public var retry: String
+
+        public var seeTranslation: String
+
+        public var seeOriginal: String
+
         public init(
             requested: String = Localization.default().requested,
             pending: String = Localization.default().pending,
@@ -145,7 +155,12 @@ extension Configuration {
             discardEnteredInformation: String = Localization.default().discardEnteredInformation,
             addButtonInNavigationBar: String = Localization.default().addButtonInNavigationBar,
             refresh: String = Localization.default().refresh,
-            refreshing: String = Localization.default().refreshing
+            refreshing: String = Localization.default().refreshing,
+            addFeatureRequest: String = Localization.default().addFeatureRequest,
+            couldNotLoadFeatureRequests: String = Localization.default().couldNotLoadFeatureRequests,
+            retry: String = Localization.default().retry,
+            seeTranslation: String = Localization.default().seeTranslation,
+            seeOriginal: String = Localization.default().seeOriginal
         ) {
             self.requested = requested
             self.pending = pending
@@ -192,6 +207,11 @@ extension Configuration {
             self.addButtonInNavigationBar = addButtonInNavigationBar
             self.refresh = refresh
             self.refreshing = refreshing
+            self.addFeatureRequest = addFeatureRequest
+            self.couldNotLoadFeatureRequests = couldNotLoadFeatureRequests
+            self.retry = retry
+            self.seeTranslation = seeTranslation
+            self.seeOriginal = seeOriginal
         }
 
         public static func `default`() -> Localization {
@@ -240,7 +260,12 @@ extension Configuration {
                 discardEnteredInformation: "Discard entered information?",
                 addButtonInNavigationBar: "Create",
                 refresh: "Refresh",
-                refreshing: "Refreshing.."
+                refreshing: "Refreshing..",
+                addFeatureRequest: "Add a feature request",
+                couldNotLoadFeatureRequests: "Couldn't load feature requests",
+                retry: "Retry",
+                seeTranslation: "See translation",
+                seeOriginal: "See original"
             )
         }
     }

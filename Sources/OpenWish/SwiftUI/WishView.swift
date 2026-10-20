@@ -46,6 +46,15 @@ struct WishView: View {
     @State
     private var voteButtonOpacity: CGFloat = 1
 
+    @State
+    private var translatedTitle: String?
+
+    @State
+    private var translatedDescription: String?
+
+    @State
+    private var isShowingTranslation = false
+
     private let wishResponse: WishResponse
 
     private let voteActionCompletion: () -> Void
@@ -137,9 +146,9 @@ struct WishView: View {
 
             VStack(spacing: 5) {
                 HStack {
-                    Text(wishResponse.title)
+                    Text(displayedTitle)
                         .foregroundColor(textColor)
-                        .font(.system(size: 17))
+                        .font(.body)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.leading)
                         .lineLimit(viewKind == .list ? 1 : nil)
@@ -149,7 +158,7 @@ struct WishView: View {
                     if viewKind == .list && OpenWish.config.statusBadge == .show {
                         Text(wishResponse.state.description.uppercased())
                             .opacity(0.8)
-                            .font(.system(size: 10, weight: .medium))
+                            .font(.caption2.weight(.medium))
                             .padding(EdgeInsets(top: 3, leading: 5, bottom: 3, trailing: 5))
                             .foregroundColor(.primary)
                             .background(badgeColor(for: wishResponse.state).opacity(1/3))
@@ -158,19 +167,42 @@ struct WishView: View {
                 }
 
                 HStack {
-                    Text(wishResponse.description)
+                    Text(displayedDescription)
                         .foregroundColor(textColor)
-                        .font(.system(size: 13))
+                        .font(.footnote)
                         .multilineTextAlignment(.leading)
                         .lineLimit(descriptionLineLimit)
                     Spacer()
                 }
+
+                #if os(iOS) && canImport(Translation)
+                if #available(iOS 18.0, *) {
+                    HStack {
+                        WishTranslateSection(
+                            title: wishResponse.title,
+                            description: wishResponse.description,
+                            translatedTitle: $translatedTitle,
+                            translatedDescription: $translatedDescription,
+                            isShowingTranslation: $isShowingTranslation
+                        )
+                        Spacer()
+                    }
+                }
+                #endif
             }
         }
         .padding([.top, .bottom, .trailing], 10)
         .background(backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: OpenWish.config.cornerRadius, style: .continuous))
         .wkShadow()
+    }
+
+    private var displayedTitle: String {
+        isShowingTranslation ? (translatedTitle ?? wishResponse.title) : wishResponse.title
+    }
+
+    private var displayedDescription: String {
+        isShowingTranslation ? (translatedDescription ?? wishResponse.description) : wishResponse.description
     }
 
     func badgeColor(for wishState: WishState) -> Color {

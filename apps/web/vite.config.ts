@@ -27,7 +27,7 @@ const config = defineConfig(({ mode }) => {
         : undefined,
     },
     plugins: [
-      ...(isTest ? [] : [devtools(), cloudflare({ viteEnvironment: { name: 'ssr' } }), tanstackStart()]),
+      ...(isTest ? [] : [devtools(), cloudflare({ configPath: process.env.WRANGLER_CONFIG, viteEnvironment: { name: 'ssr' } }), tanstackStart()]),
       tailwindcss(),
       viteReact(),
     ],

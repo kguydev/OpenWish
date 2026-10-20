@@ -70,7 +70,7 @@ export function DashboardProjectsPage() {
         actions={
           <Button
             size="sm"
-            className="bg-white text-black hover:bg-neutral-200"
+            className="bg-primary text-primary-foreground hover:bg-primary/90"
             onClick={() => {
               const section = document.getElementById("create-project-card");
               section?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -83,7 +83,7 @@ export function DashboardProjectsPage() {
       />
       <section className="space-y-6">
         {sessionError || error ? (
-          <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+          <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-700 dark:text-red-300">
             {error ?? sessionError}
           </div>
         ) : null}
@@ -91,7 +91,7 @@ export function DashboardProjectsPage() {
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="grid gap-3 sm:grid-cols-2">
             {projects.map((project) => (
-              <Card key={project.slug} className="border-white/10 bg-neutral-950">
+              <Card key={project.slug} className="border-border bg-card">
                 <CardContent className="space-y-4 p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex min-w-0 items-center gap-3">
@@ -99,14 +99,14 @@ export function DashboardProjectsPage() {
                         <img
                           src={project.appIconUrl}
                           alt=""
-                          className="size-10 shrink-0 rounded-lg border border-white/10"
+                          className="size-10 shrink-0 rounded-lg border border-border"
                         />
                       ) : null}
                       <div className="min-w-0">
-                        <h3 className="truncate text-base font-medium text-white">
+                        <h3 className="truncate text-base font-medium text-foreground">
                           {project.name}
                         </h3>
-                        <p className="mt-0.5 text-xs text-neutral-500">
+                        <p className="mt-0.5 text-xs text-muted-foreground/80">
                           {formatDate(project.createdAt)}
                         </p>
                       </div>
@@ -114,7 +114,7 @@ export function DashboardProjectsPage() {
                     <Button
                       variant="outline"
                       size="icon"
-                      className="size-8 border-white/10 bg-transparent text-neutral-400 hover:bg-white/5 hover:text-white"
+                      className="size-8 border-border bg-transparent text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
                       onClick={async () => {
                         await navigator.clipboard.writeText(project.apiKey);
                       }}
@@ -124,10 +124,10 @@ export function DashboardProjectsPage() {
                   </div>
 
                   <div>
-                    <p className="text-[11px] uppercase tracking-wider text-neutral-500">
+                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground/80">
                       API key
                     </p>
-                    <code className="mt-1.5 block overflow-x-auto rounded-md border border-white/10 bg-black px-2.5 py-1.5 text-[11px] text-neutral-300">
+                    <code className="mt-1.5 block overflow-x-auto rounded-md border border-border bg-background px-2.5 py-1.5 text-[11px] text-foreground/80">
                       {project.apiKey}
                     </code>
                   </div>
@@ -135,7 +135,7 @@ export function DashboardProjectsPage() {
                   <div className="flex flex-wrap gap-2">
                     <Button
                       size="sm"
-                      className="bg-white text-black hover:bg-neutral-200"
+                      className="bg-primary text-primary-foreground hover:bg-primary/90"
                       onClick={() => assignLocation(`/dashboard/${project.slug}`)}
                     >
                       Open
@@ -145,21 +145,21 @@ export function DashboardProjectsPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="border-white/10 bg-transparent text-neutral-400 hover:bg-white/5 hover:text-white"
+                          className="border-border bg-transparent text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
                         >
                           <Trash2 className="size-3.5" />
                           Delete
                         </Button>
                       </AlertDialogTrigger>
-                      <AlertDialogContent className="border-white/10 bg-neutral-950 text-neutral-100">
+                      <AlertDialogContent className="border-border bg-card text-foreground">
                         <AlertDialogHeader>
                           <AlertDialogTitle>Delete {project.name}?</AlertDialogTitle>
-                          <AlertDialogDescription className="text-neutral-400">
+                          <AlertDialogDescription className="text-muted-foreground">
                             This removes the project and its stored feedback.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel className="border-white/10 bg-transparent text-neutral-300 hover:bg-white/5 hover:text-white">
+                          <AlertDialogCancel className="border-border bg-transparent text-foreground/80 hover:bg-foreground/5 hover:text-foreground">
                             Cancel
                           </AlertDialogCancel>
                           <AlertDialogAction
@@ -193,16 +193,16 @@ export function DashboardProjectsPage() {
             ))}
 
             {isLoading && projects.length === 0 ? (
-              <Card className="border-dashed border-white/10 bg-transparent">
-                <CardContent className="grid min-h-32 place-items-center p-4 text-xs text-neutral-500">
+              <Card className="border-dashed border-border bg-transparent">
+                <CardContent className="grid min-h-32 place-items-center p-4 text-xs text-muted-foreground/80">
                   Loading…
                 </CardContent>
               </Card>
             ) : null}
 
             {!isLoading && projects.length === 0 ? (
-              <Card className="border-dashed border-white/10 bg-transparent">
-                <CardContent className="grid min-h-32 place-items-center p-4 text-xs text-neutral-500">
+              <Card className="border-dashed border-border bg-transparent">
+                <CardContent className="grid min-h-32 place-items-center p-4 text-xs text-muted-foreground/80">
                   No projects yet.
                 </CardContent>
               </Card>
@@ -210,11 +210,11 @@ export function DashboardProjectsPage() {
           </div>
 
           <div className="space-y-4">
-            <Card id="create-project-card" className="h-fit border-white/10 bg-neutral-950">
+            <Card id="create-project-card" className="h-fit border-border bg-card">
             <CardContent className="space-y-4 p-4">
               <div>
-                <h3 className="text-sm font-medium text-white">New project</h3>
-                <p className="mt-1 text-xs text-neutral-500">
+                <h3 className="text-sm font-medium text-foreground">New project</h3>
+                <p className="mt-1 text-xs text-muted-foreground/80">
                   Generates an API key for the Swift SDK.
                 </p>
               </div>
@@ -246,9 +246,9 @@ export function DashboardProjectsPage() {
                 }}
               >
                 <label className="grid gap-1.5">
-                  <span className="text-xs text-neutral-400">Project name</span>
+                  <span className="text-xs text-muted-foreground">Project name</span>
                   <Input
-                    className="h-9 border-white/10 bg-neutral-900 text-neutral-100"
+                    className="h-9 border-border bg-muted text-foreground"
                     value={projectName}
                     onChange={(event) => {
                       const nextName = event.target.value;
@@ -260,15 +260,15 @@ export function DashboardProjectsPage() {
                   />
                 </label>
                 <label className="grid gap-1.5">
-                  <span className="text-xs text-neutral-400">Slug</span>
+                  <span className="text-xs text-muted-foreground">Slug</span>
                   <Input
-                    className="h-9 border-white/10 bg-neutral-900 text-neutral-100"
+                    className="h-9 border-border bg-muted text-foreground"
                     value={projectSlug}
                     onChange={(event) => setProjectSlug(slugify(event.target.value))}
                   />
                 </label>
                 <Button
-                  className="h-9 w-full bg-white text-black hover:bg-neutral-200"
+                  className="h-9 w-full bg-primary text-primary-foreground hover:bg-primary/90"
                   disabled={isCreating}
                 >
                   {isCreating ? "Creating…" : "Create project"}

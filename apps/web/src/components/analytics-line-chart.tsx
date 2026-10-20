@@ -10,7 +10,7 @@ type AnalyticsLineChartProps = {
 export function AnalyticsLineChart({ points }: AnalyticsLineChartProps) {
   if (points.length === 0) {
     return (
-      <div className="grid h-64 place-items-center rounded-md border border-dashed border-white/10 text-xs text-neutral-500">
+      <div className="grid h-64 place-items-center rounded-md border border-dashed border-border text-xs text-muted-foreground/80">
         No views recorded yet.
       </div>
     );
@@ -37,7 +37,7 @@ export function AnalyticsLineChart({ points }: AnalyticsLineChartProps) {
     .join(" ");
 
   return (
-    <div className="overflow-hidden rounded-md border border-white/10 bg-neutral-950 p-4">
+    <div className="overflow-hidden rounded-md border border-border bg-card p-4">
       <svg
         className="h-64 w-full"
         viewBox={`0 0 ${width} ${height + 48}`}
@@ -53,7 +53,7 @@ export function AnalyticsLineChart({ points }: AnalyticsLineChartProps) {
               y1={y}
               x2={width - paddingX}
               y2={y}
-              stroke="rgba(255,255,255,0.06)"
+              className="stroke-foreground/[0.06]"
             />
           );
         })}
@@ -61,7 +61,7 @@ export function AnalyticsLineChart({ points }: AnalyticsLineChartProps) {
         <path
           d={path}
           fill="none"
-          stroke="rgba(255,255,255,0.85)"
+          className="stroke-foreground/85"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -73,15 +73,14 @@ export function AnalyticsLineChart({ points }: AnalyticsLineChartProps) {
               cx={point.x}
               cy={point.y}
               r="3"
-              fill="#000"
-              stroke="rgba(255,255,255,0.85)"
+              className="fill-card stroke-foreground/85"
               strokeWidth="1.5"
             />
             <text
               x={point.x}
               y={height + 24}
               textAnchor="middle"
-              fill="rgba(255,255,255,0.5)"
+              className="fill-muted-foreground"
               fontSize="10"
             >
               {formatShortDay(point.date)}

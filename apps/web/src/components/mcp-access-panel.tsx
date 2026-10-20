@@ -30,27 +30,27 @@ export function McpAccessPanel() {
   }
 
   return (
-    <Card className="border-white/10 bg-neutral-950">
+    <Card className="border-border bg-card">
       <CardContent className="space-y-4 p-4">
         <div className="flex items-start gap-3">
-          <KeyRound className="mt-0.5 size-4 text-neutral-400" />
+          <KeyRound className="mt-0.5 size-4 text-muted-foreground" />
           <div>
-            <h3 className="text-sm font-medium text-white">Agent access (MCP)</h3>
-            <p className="mt-1 text-xs leading-relaxed text-neutral-500">
+            <h3 className="text-sm font-medium text-foreground">Agent access (MCP)</h3>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground/80">
               Choose projects with OAuth, or use a global API key for full access.
             </p>
           </div>
         </div>
 
-        <p className="text-xs leading-relaxed text-neutral-400">
+        <p className="text-xs leading-relaxed text-muted-foreground">
           For ChatGPT, connect the MCP URL using OAuth, sign in, and choose projects and permissions.
           Select “Keep this connection until I revoke it” to allow automatic renewal without a fixed expiration.
           This keeps your selected project permissions; access tokens still expire after 15 minutes.{" "}
-          <a href="/oauth/grants" className="text-neutral-200 underline underline-offset-2">Manage OAuth access</a>.
+          <a href="/oauth/grants" className="text-foreground underline underline-offset-2">Manage OAuth access</a>.
         </p>
 
-        {error ? <p className="text-xs text-red-300">Global API key: {error}</p> : null}
-        {!access && !error ? <p className="text-xs text-neutral-500">Loading…</p> : null}
+        {error ? <p className="text-xs text-red-700 dark:text-red-300">Global API key: {error}</p> : null}
+        {!access && !error ? <p className="text-xs text-muted-foreground/80">Loading…</p> : null}
 
         {access ? (
           <div className="space-y-3">
@@ -70,7 +70,7 @@ export function McpAccessPanel() {
                   type="button"
                   variant="outline"
                   size="icon"
-                  className="size-8 border-white/10 bg-transparent text-neutral-400 hover:bg-white/5 hover:text-white"
+                  className="size-8 border-border bg-transparent text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
                   aria-label={revealed ? "Hide bearer" : "Reveal bearer"}
                   onClick={() => setRevealed((value) => !value)}
                 >
@@ -78,8 +78,8 @@ export function McpAccessPanel() {
                 </Button>
               }
             />
-            <p className="text-[11px] leading-relaxed text-neutral-600">
-              Send <code className="text-neutral-400">Authorization: Bearer &lt;token&gt;</code> to the MCP URL. The same credential can act across all projects.
+            <p className="text-[11px] leading-relaxed text-muted-foreground/80">
+              Send <code className="text-muted-foreground">Authorization: Bearer &lt;token&gt;</code> to the MCP URL. The same credential can act across all projects.
             </p>
           </div>
         ) : null}
@@ -103,9 +103,9 @@ function SecretRow({
 }) {
   return (
     <div>
-      <p className="mb-1.5 text-[11px] uppercase tracking-wider text-neutral-500">{label}</p>
+      <p className="mb-1.5 text-[11px] uppercase tracking-wider text-muted-foreground/80">{label}</p>
       <div className="flex gap-2">
-        <code className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap rounded-md border border-white/10 bg-black px-2.5 py-2 text-[11px] text-neutral-300">
+        <code className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap rounded-md border border-border bg-background px-2.5 py-2 text-[11px] text-foreground/80">
           {displayValue}
         </code>
         {action}
@@ -113,7 +113,7 @@ function SecretRow({
           type="button"
           variant="outline"
           size="icon"
-          className="size-8 border-white/10 bg-transparent text-neutral-400 hover:bg-white/5 hover:text-white"
+          className="size-8 border-border bg-transparent text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
           aria-label={`Copy ${label}`}
           onClick={onCopy}
         >

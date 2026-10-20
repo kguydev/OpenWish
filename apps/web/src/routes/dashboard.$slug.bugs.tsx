@@ -105,7 +105,7 @@ export function DashboardBugsPage() {
       <DashboardPageHeader title="Bugs" />
       <section className="space-y-4">
         {sessionError || error ? (
-          <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+          <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-700 dark:text-red-300">
             {error ?? sessionError}
           </div>
         ) : null}
@@ -119,15 +119,15 @@ export function DashboardBugsPage() {
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs transition-colors",
                 filter === value
-                  ? "border-white/30 bg-white text-black"
-                  : "border-white/10 bg-transparent text-neutral-400 hover:border-white/20 hover:text-white",
+                  ? "border-foreground/30 bg-primary text-primary-foreground"
+                  : "border-border bg-transparent text-muted-foreground hover:border-foreground/20 hover:text-foreground",
               )}
             >
               <span>{filterLabels[value]}</span>
               <span
                 className={cn(
                   "rounded px-1.5 text-[10px] tabular-nums",
-                  filter === value ? "bg-black/15 text-black" : "bg-white/5 text-neutral-300",
+                  filter === value ? "bg-primary-foreground/15 text-primary-foreground" : "bg-foreground/5 text-foreground/80",
                 )}
               >
                 {counts[value]}
@@ -137,14 +137,14 @@ export function DashboardBugsPage() {
         </div>
 
         {!bugs ? (
-          <Card className="border-dashed border-white/10 bg-transparent">
-            <CardContent className="grid min-h-32 place-items-center p-6 text-xs text-neutral-500">
+          <Card className="border-dashed border-border bg-transparent">
+            <CardContent className="grid min-h-32 place-items-center p-6 text-xs text-muted-foreground/80">
               {isLoading ? "Loading…" : "No bugs yet."}
             </CardContent>
           </Card>
         ) : filtered.length === 0 ? (
-          <Card className="border-dashed border-white/10 bg-transparent">
-            <CardContent className="grid min-h-32 place-items-center p-6 text-xs text-neutral-500">
+          <Card className="border-dashed border-border bg-transparent">
+            <CardContent className="grid min-h-32 place-items-center p-6 text-xs text-muted-foreground/80">
               {bugs.length === 0 ? "No bugs reported yet." : "No bugs match this filter."}
             </CardContent>
           </Card>
@@ -249,9 +249,9 @@ function BugRow({
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-start gap-3 rounded-md border border-white/10 bg-neutral-950 p-3 text-left transition hover:border-white/20 hover:bg-white/[0.03]"
+      className="flex w-full items-start gap-3 rounded-md border border-border bg-card p-3 text-left transition hover:border-foreground/20 hover:bg-foreground/[0.03]"
     >
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded border border-white/10 bg-black">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded border border-border bg-background">
         {thumb ? (
           <img
             src={bugScreenshotUrl(slug, bug.id, thumb)}
@@ -259,31 +259,31 @@ function BugRow({
             className="h-full w-full object-cover"
           />
         ) : (
-          <span className="text-[10px] uppercase tracking-wider text-neutral-600">N/A</span>
+          <span className="text-[10px] uppercase tracking-wider text-muted-foreground/80">N/A</span>
         )}
       </div>
       <div className="min-w-0 flex-1 space-y-1">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="truncate text-sm font-medium text-white">{bug.title}</p>
-          <span className="rounded border border-white/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-neutral-300">
+          <p className="truncate text-sm font-medium text-foreground">{bug.title}</p>
+          <span className="rounded border border-border px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-foreground/80">
             {bugStateLabels[bug.state]}
           </span>
           <span className={cn(
             "rounded px-1.5 py-0.5 text-[10px] font-medium",
             bug.kind === "cardData"
-              ? "bg-amber-400/15 text-amber-200"
-              : "bg-sky-400/15 text-sky-200",
+              ? "bg-amber-400/15 text-amber-700 dark:text-amber-200"
+              : "bg-sky-400/15 text-sky-700 dark:text-sky-200",
           )}>
             {bug.kind === "cardData" ? "Card data" : "App bug"}
           </span>
           {bug.screenshotKeys.length > 1 ? (
-            <span className="text-[10px] text-neutral-500">
+            <span className="text-[10px] text-muted-foreground/80">
               +{bug.screenshotKeys.length - 1} more
             </span>
           ) : null}
         </div>
-        <p className="line-clamp-2 text-xs leading-5 text-neutral-400">{bug.description}</p>
-        <div className="flex items-center gap-3 text-[11px] text-neutral-500">
+        <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">{bug.description}</p>
+        <div className="flex items-center gap-3 text-[11px] text-muted-foreground/80">
           <span>{formatDate(bug.createdAt)}</span>
           <span>•</span>
           <span>{bug.commentList.length} comments</span>

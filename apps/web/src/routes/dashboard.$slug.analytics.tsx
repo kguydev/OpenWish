@@ -62,7 +62,7 @@ export function DashboardAnalyticsPage() {
             asChild
             variant="outline"
             size="sm"
-            className="border-white/10 bg-transparent text-neutral-300 hover:bg-white/5 hover:text-white"
+            className="border-border bg-transparent text-foreground/80 hover:bg-foreground/5 hover:text-foreground"
           >
             <Link to="/dashboard/$slug" params={{ slug }}>
               Back to board
@@ -72,14 +72,14 @@ export function DashboardAnalyticsPage() {
       />
       <section className="space-y-5">
         {sessionError || error ? (
-          <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+          <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-700 dark:text-red-300">
             {error ?? sessionError}
           </div>
         ) : null}
 
         {!data ? (
-          <Card className="border-dashed border-white/10 bg-transparent">
-            <CardContent className="grid min-h-48 place-items-center p-6 text-xs text-neutral-500">
+          <Card className="border-dashed border-border bg-transparent">
+            <CardContent className="grid min-h-48 place-items-center p-6 text-xs text-muted-foreground/80">
               {isLoading ? "Loading…" : "No analytics yet."}
             </CardContent>
           </Card>
@@ -92,12 +92,12 @@ export function DashboardAnalyticsPage() {
                 { label: "Feature requests", value: data.totals.featureRequests },
                 { label: "Engagement rate", value: formatPercent(data.totals.engagementRate) },
               ].map(({ label, value }) => (
-                <Card key={label} className="border-white/10 bg-neutral-950">
+                <Card key={label} className="border-border bg-card">
                   <CardContent className="space-y-1 p-4">
-                    <p className="text-[11px] uppercase tracking-wider text-neutral-500">
+                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground/80">
                       {label}
                     </p>
-                    <p className="text-2xl font-medium text-white">{value}</p>
+                    <p className="text-2xl font-medium text-foreground">{value}</p>
                   </CardContent>
                 </Card>
               ))}

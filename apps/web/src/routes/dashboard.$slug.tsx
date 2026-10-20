@@ -141,24 +141,24 @@ function WishCard({
         "cursor-grab active:cursor-grabbing",
         isDragging && "opacity-40",
         selected
-          ? "border-white/25 bg-white/5"
-          : "border-white/10 bg-neutral-950 hover:border-white/20 hover:bg-white/[0.03]",
+          ? "border-foreground/25 bg-foreground/5"
+          : "border-border bg-card hover:border-foreground/20 hover:bg-foreground/[0.03]",
       )}
     >
-      <div className="flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded border border-white/10 bg-black leading-none">
-        <span className="text-sm font-semibold text-white">{wish.votingUsers.length}</span>
-        <span className="mt-0.5 text-[8px] uppercase tracking-wider text-neutral-500">votes</span>
+      <div className="flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded border border-border bg-background leading-none">
+        <span className="text-sm font-semibold text-foreground">{wish.votingUsers.length}</span>
+        <span className="mt-0.5 text-[8px] uppercase tracking-wider text-muted-foreground/80">votes</span>
       </div>
       <div className="min-w-0 flex-1 space-y-1">
         <div className="flex items-start justify-between gap-2">
-          <p className="truncate text-sm font-medium text-white">{wish.title}</p>
+          <p className="truncate text-sm font-medium text-foreground">{wish.title}</p>
           {showState ? (
-            <span className="shrink-0 text-[11px] text-neutral-500">
+            <span className="shrink-0 text-[11px] text-muted-foreground/80">
               {wishStateLabels[wish.state]}
             </span>
           ) : null}
         </div>
-        <p className="line-clamp-2 text-xs leading-5 text-neutral-400">{wish.description}</p>
+        <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">{wish.description}</p>
       </div>
     </div>
   );
@@ -277,7 +277,7 @@ export function DashboardBoardPage() {
           <Button
             variant="outline"
             size="sm"
-            className="border-white/10 bg-transparent text-neutral-300 hover:bg-white/5 hover:text-white"
+            className="border-border bg-transparent text-foreground/80 hover:bg-foreground/5 hover:text-foreground"
             disabled={!data}
             onClick={() => {
               if (!data) {
@@ -297,14 +297,14 @@ export function DashboardBoardPage() {
             Export
           </Button>
 
-          <div className="inline-flex rounded-md border border-white/10 p-0.5">
+          <div className="inline-flex rounded-md border border-border p-0.5">
             <button
               type="button"
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-xs transition-colors",
                 viewMode === "board"
-                  ? "bg-white text-black"
-                  : "text-neutral-400 hover:text-white",
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
               onClick={() => setViewMode("board")}
             >
@@ -316,8 +316,8 @@ export function DashboardBoardPage() {
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-xs transition-colors",
                 viewMode === "rows"
-                  ? "bg-white text-black"
-                  : "text-neutral-400 hover:text-white",
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
               onClick={() => setViewMode("rows")}
             >
@@ -330,36 +330,36 @@ export function DashboardBoardPage() {
       />
       <section className="space-y-4">
         {sessionError || error ? (
-          <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+          <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-700 dark:text-red-300">
             {error ?? sessionError}
           </div>
         ) : null}
 
         {!data ? (
-          <Card className="border-dashed border-white/10 bg-transparent">
-            <CardContent className="grid min-h-32 place-items-center p-6 text-xs text-neutral-500">
+          <Card className="border-dashed border-border bg-transparent">
+            <CardContent className="grid min-h-32 place-items-center p-6 text-xs text-muted-foreground/80">
               {isLoading ? "Loading…" : "No project data yet."}
             </CardContent>
           </Card>
         ) : (
           <>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-md border border-white/10 bg-neutral-950 px-4 py-3">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-md border border-border bg-card px-4 py-3">
               {[
                 ["Requests", data.project.totalWishes],
                 ["Votes", data.project.totalVotes],
                 ["Users", data.project.totalUsers],
               ].map(([label, value]) => (
                 <div key={label} className="flex items-baseline gap-2">
-                  <span className="text-[11px] uppercase tracking-wider text-neutral-500">
+                  <span className="text-[11px] uppercase tracking-wider text-muted-foreground/80">
                     {label}
                   </span>
-                  <span className="text-base font-medium tabular-nums text-white">{value}</span>
+                  <span className="text-base font-medium tabular-nums text-foreground">{value}</span>
                 </div>
               ))}
               <Link
                 to="/dashboard/$slug/analytics"
                 params={{ slug }}
-                className="ml-auto text-xs text-neutral-400 hover:text-white"
+                className="ml-auto text-xs text-muted-foreground hover:text-foreground"
               >
                 Analytics →
               </Link>
@@ -395,17 +395,17 @@ export function DashboardBoardPage() {
                           void handleDropOnColumn(targetState);
                         }}
                         className={cn(
-                          "rounded-md border bg-neutral-950 transition-colors",
+                          "rounded-md border bg-card transition-colors",
                           isDropTarget
-                            ? "border-white/40 bg-white/[0.04]"
-                            : "border-white/10",
+                            ? "border-foreground/40 bg-foreground/[0.04]"
+                            : "border-border",
                         )}
                       >
-                        <div className="flex items-center justify-between gap-2 border-b border-white/10 px-3 py-2">
-                          <span className="text-[11px] uppercase tracking-wider text-neutral-400">
+                        <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
+                          <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
                             {column.label}
                           </span>
-                          <span className="rounded border border-white/10 px-1.5 py-0.5 text-[10px] tabular-nums text-neutral-400">
+                          <span className="rounded border border-border px-1.5 py-0.5 text-[10px] tabular-nums text-muted-foreground">
                             {column.wishes.length}
                           </span>
                         </div>
@@ -416,8 +416,8 @@ export function DashboardBoardPage() {
                               className={cn(
                                 "grid min-h-12 place-items-center rounded text-center text-[11px] transition-colors",
                                 isDropTarget
-                                  ? "border border-dashed border-white/30 text-neutral-300"
-                                  : "text-neutral-600",
+                                  ? "border border-dashed border-foreground/30 text-foreground/80"
+                                  : "text-muted-foreground/80",
                               )}
                             >
                               {isDropTarget && draggingWishId ? "Drop here" : "Empty"}
@@ -458,10 +458,10 @@ export function DashboardBoardPage() {
                   .map((column) => (
                     <div key={column.key} className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] uppercase tracking-wider text-neutral-400">
+                        <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
                           {column.label}
                         </span>
-                        <span className="rounded border border-white/10 px-1.5 py-0.5 text-[10px] tabular-nums text-neutral-400">
+                        <span className="rounded border border-border px-1.5 py-0.5 text-[10px] tabular-nums text-muted-foreground">
                           {column.wishes.length}
                         </span>
                       </div>
@@ -482,7 +482,7 @@ export function DashboardBoardPage() {
                     </div>
                   ))}
                 {groupedColumns.every((column) => column.wishes.length === 0) ? (
-                  <div className="rounded-md border border-dashed border-white/10 px-4 py-10 text-center text-xs text-neutral-500">
+                  <div className="rounded-md border border-dashed border-border px-4 py-10 text-center text-xs text-muted-foreground/80">
                     No requests yet.
                   </div>
                 ) : null}

@@ -112,10 +112,10 @@ function FeedbackPage() {
   }, [project?.appIconUrl, project?.appName, project?.name]);
 
   return (
-    <main className="grid min-h-screen place-items-center bg-black px-5 py-10 text-neutral-100">
-      <Card className="w-full max-w-md border-white/10 bg-neutral-950">
+    <main className="grid min-h-screen place-items-center bg-background px-5 py-10 text-foreground">
+      <Card className="w-full max-w-md border-border bg-card">
         {loadState === "loading" ? (
-          <CardContent className="py-16 text-center text-sm text-neutral-500">
+          <CardContent className="py-16 text-center text-sm text-muted-foreground/80">
             Loading…
           </CardContent>
         ) : loadState === "missing" || !project ? (
@@ -132,11 +132,11 @@ function UnavailableState() {
   return (
     <>
       <CardHeader>
-        <CardTitle className="text-xl font-medium tracking-tight text-white">
+        <CardTitle className="text-xl font-medium tracking-tight text-foreground">
           Feedback page not found
         </CardTitle>
       </CardHeader>
-      <CardContent className="text-sm text-neutral-400">
+      <CardContent className="text-sm text-muted-foreground">
         This feedback page does not exist, or it isn't accepting submissions
         right now. If you reached this page from an app's support link, please
         contact support directly.
@@ -279,14 +279,14 @@ function FeedbackForm({
     return (
       <>
         <CardHeader>
-          <div className="flex items-center gap-2 text-emerald-400">
+          <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
             <CheckCircle2 className="h-5 w-5" />
-            <CardTitle className="text-xl font-medium tracking-tight text-white">
+            <CardTitle className="text-xl font-medium tracking-tight text-foreground">
               Thanks — we got it.
             </CardTitle>
           </div>
         </CardHeader>
-        <CardContent className="space-y-4 text-sm text-neutral-400">
+        <CardContent className="space-y-4 text-sm text-muted-foreground">
           <p>
             Your {kind === "bug" ? "bug report" : "feature request"} was sent
             to the {project.name} team. They'll follow up via email if you
@@ -295,7 +295,7 @@ function FeedbackForm({
           <Button
             type="button"
             variant="outline"
-            className="border-white/10 bg-neutral-900 text-neutral-100 hover:bg-neutral-800 hover:text-white"
+            className="border-border bg-muted text-foreground hover:bg-accent hover:text-foreground"
             onClick={() => {
               setTitle("");
               setDescription("");
@@ -319,19 +319,19 @@ function FeedbackForm({
             <img
               src={project.appIconUrl}
               alt={`${project.appName ?? project.name} icon`}
-              className="size-7 rounded-md border border-white/10"
+              className="size-7 rounded-md border border-border"
             />
           ) : (
             <img src="/openwish-icon-dark-192.png" alt="" className="size-7 rounded-md" />
           )}
-          <span className="text-sm font-medium tracking-tight text-white">
+          <span className="text-sm font-medium tracking-tight text-foreground">
             {project.appName ?? project.name}
           </span>
         </div>
-        <CardTitle className="pt-4 text-xl font-medium tracking-tight text-white">
+        <CardTitle className="pt-4 text-xl font-medium tracking-tight text-foreground">
           Send feedback
         </CardTitle>
-        <p className="text-sm text-neutral-500">
+        <p className="text-sm text-muted-foreground/80">
           Report a bug or suggest a feature for {project.appName ?? project.name}.
         </p>
       </CardHeader>
@@ -343,17 +343,17 @@ function FeedbackForm({
               setKind(value as PublicFeedbackKind)
             }
           >
-            <TabsList className="grid w-full grid-cols-2 bg-neutral-900">
+            <TabsList className="grid w-full grid-cols-2 bg-muted">
               <TabsTrigger
                 value="bug"
-                className="data-[state=active]:bg-white data-[state=active]:text-black"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               >
                 <Bug className="mr-1.5 h-3.5 w-3.5" />
                 Bug
               </TabsTrigger>
               <TabsTrigger
                 value="wish"
-                className="data-[state=active]:bg-white data-[state=active]:text-black"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               >
                 <Lightbulb className="mr-1.5 h-3.5 w-3.5" />
                 Feature request
@@ -362,7 +362,7 @@ function FeedbackForm({
           </Tabs>
 
           <div className="space-y-1.5">
-            <label htmlFor="public-feedback-title" className="text-xs uppercase tracking-wider text-neutral-500">
+            <label htmlFor="public-feedback-title" className="text-xs uppercase tracking-wider text-muted-foreground/80">
               Title
             </label>
             <Input
@@ -372,12 +372,12 @@ function FeedbackForm({
               onChange={(event) => setTitle(event.target.value)}
               placeholder={kind === "bug" ? "Crash on launch" : "Add dark mode"}
               required
-              className="border-white/10 bg-neutral-900 text-neutral-100"
+              className="border-border bg-muted text-foreground"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="public-feedback-description" className="text-xs uppercase tracking-wider text-neutral-500">
+            <label htmlFor="public-feedback-description" className="text-xs uppercase tracking-wider text-muted-foreground/80">
               Description
             </label>
             <Textarea
@@ -392,13 +392,13 @@ function FeedbackForm({
                   : "What would you like to see? Why is it useful?"
               }
               required
-              className="border-white/10 bg-neutral-900 text-neutral-100"
+              className="border-border bg-muted text-foreground"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="public-feedback-email" className="text-xs uppercase tracking-wider text-neutral-500">
-              Email <span className="text-neutral-600">(optional)</span>
+            <label htmlFor="public-feedback-email" className="text-xs uppercase tracking-wider text-muted-foreground/80">
+              Email <span className="text-muted-foreground/80">(optional)</span>
             </label>
             <Input
               id="public-feedback-email"
@@ -407,9 +407,9 @@ function FeedbackForm({
               maxLength={254}
               onChange={(event) => setEmail(event.target.value)}
               placeholder="you@example.com"
-              className="border-white/10 bg-neutral-900 text-neutral-100"
+              className="border-border bg-muted text-foreground"
             />
-            <p className="text-[11px] text-neutral-600">
+            <p className="text-[11px] text-muted-foreground/80">
               Only used so the team can follow up about this submission.
             </p>
           </div>
@@ -417,21 +417,21 @@ function FeedbackForm({
           {project.turnstileSiteKey ? (
             <div ref={widgetContainerRef} className="flex justify-center" />
           ) : (
-            <p className="rounded-md border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-xs text-amber-300">
+            <p className="rounded-md border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-xs text-amber-700 dark:text-amber-300">
               This feedback page is missing a captcha configuration. The
               dashboard admin needs to set <code>OPENWISH_TURNSTILE_SITE_KEY</code>.
             </p>
           )}
 
           {error ? (
-            <p className="rounded-md border border-red-500/30 bg-red-500/5 px-3 py-2 text-xs text-red-300">
+            <p className="rounded-md border border-red-500/30 bg-red-500/5 px-3 py-2 text-xs text-red-700 dark:text-red-300">
               {error}
             </p>
           ) : null}
 
           <Button
             type="submit"
-            className="h-9 w-full bg-white text-black hover:bg-neutral-200"
+            className="h-9 w-full bg-primary text-primary-foreground hover:bg-primary/90"
             disabled={
               isSubmitting ||
               !title.trim() ||

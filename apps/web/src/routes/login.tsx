@@ -73,17 +73,17 @@ export function LoginPage() {
   }
 
   return (
-    <main className="grid min-h-screen place-items-center bg-black px-5 py-10 text-neutral-100">
-      <Card className="w-full max-w-sm border-white/10 bg-neutral-950">
+    <main className="grid min-h-screen place-items-center bg-background px-5 py-10 text-foreground">
+      <Card className="w-full max-w-sm border-border bg-card">
         <CardHeader className="space-y-1">
           <div className="flex items-center gap-2">
             <img src="/openwish-icon-dark-192.png" alt="" className="size-7 rounded-md" />
-            <span className="text-sm font-medium tracking-tight text-white">OpenWish</span>
+            <span className="text-sm font-medium tracking-tight text-foreground">OpenWish</span>
           </div>
-          <CardTitle className="pt-4 text-xl font-medium tracking-tight text-white">
+          <CardTitle className="pt-4 text-xl font-medium tracking-tight text-foreground">
             Sign in
           </CardTitle>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-muted-foreground/80">
             {hasPasskey
               ? "Use the passkey registered for this dashboard."
               : "Single-user dashboard auth."}
@@ -94,7 +94,7 @@ export function LoginPage() {
             <>
               <Button
                 type="button"
-                className="h-9 w-full bg-white text-black hover:bg-neutral-200"
+                className="h-9 w-full bg-primary text-primary-foreground hover:bg-primary/90"
                 disabled={isPasskeyLoading}
                 onClick={handlePasskeyLogin}
               >
@@ -102,17 +102,17 @@ export function LoginPage() {
                 {isPasskeyLoading ? "Waiting for passkey…" : "Sign in with passkey"}
               </Button>
               {error ? (
-                <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+                <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-700 dark:text-red-300">
                   {error}
                 </div>
               ) : null}
-              <p className="text-[11px] leading-relaxed text-neutral-500">
+              <p className="text-[11px] leading-relaxed text-muted-foreground/80">
                 Lost every device? Recover by deleting the rows in{" "}
-                <code className="rounded bg-white/5 px-1 py-0.5 text-[10px] text-neutral-300">
+                <code className="rounded bg-foreground/5 px-1 py-0.5 text-[10px] text-foreground/80">
                   auth_passkeys
                 </code>{" "}
                 via{" "}
-                <code className="rounded bg-white/5 px-1 py-0.5 text-[10px] text-neutral-300">
+                <code className="rounded bg-foreground/5 px-1 py-0.5 text-[10px] text-foreground/80">
                   wrangler d1 execute
                 </code>{" "}
                 — the password fallback re-activates automatically.
@@ -139,29 +139,29 @@ export function LoginPage() {
               }}
             >
               <label className="grid gap-1.5">
-                <span className="text-xs text-neutral-400">Username</span>
+                <span className="text-xs text-muted-foreground">Username</span>
                 <Input
-                  className="h-9 border-white/10 bg-neutral-900 text-neutral-100"
+                  className="h-9 border-border bg-muted text-foreground"
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
                 />
               </label>
               <label className="grid gap-1.5">
-                <span className="text-xs text-neutral-400">Password</span>
+                <span className="text-xs text-muted-foreground">Password</span>
                 <Input
-                  className="h-9 border-white/10 bg-neutral-900 text-neutral-100"
+                  className="h-9 border-border bg-muted text-foreground"
                   type="password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                 />
               </label>
               {error ? (
-                <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+                <div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-700 dark:text-red-300">
                   {error}
                 </div>
               ) : null}
               <Button
-                className="h-9 w-full bg-white text-black hover:bg-neutral-200"
+                className="h-9 w-full bg-primary text-primary-foreground hover:bg-primary/90"
                 disabled={isLoading}
               >
                 {isLoading ? "Signing in…" : "Sign in"}

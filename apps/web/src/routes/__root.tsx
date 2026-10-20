@@ -1,8 +1,8 @@
 import { HeadContent, Outlet, Scripts, createRootRoute } from "@tanstack/react-router";
 
-import appCss from "../styles.css?url";
+import { THEME_INIT_SCRIPT } from "#/lib/theme";
 
-const THEME_INIT_SCRIPT = `document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';`;
+import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -19,6 +19,12 @@ export const Route = createRootRoute({
       },
       {
         name: "theme-color",
+        media: "(prefers-color-scheme: light)",
+        content: "#f7f7f7",
+      },
+      {
+        name: "theme-color",
+        media: "(prefers-color-scheme: dark)",
         content: "#0a0f14",
       },
     ],
@@ -55,7 +61,7 @@ function RootComponent() {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-      <body className="font-sans antialiased text-slate-50">
+      <body className="font-sans antialiased text-foreground">
         <Outlet />
         <Scripts />
       </body>

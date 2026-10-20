@@ -1,8 +1,17 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import type { ProjectSummary } from "@openwish/shared";
 import { Link } from "@tanstack/react-router";
-import { BarChart3, Bug, FolderKanban, LayoutPanelTop, Settings } from "lucide-react";
+import {
+  BarChart3,
+  Bug,
+  FolderKanban,
+  LayoutPanelTop,
+  Monitor,
+  Moon,
+  Settings,
+  Sun,
+} from "lucide-react";
 
 import { Button } from "#/components/ui/button";
 import {
@@ -14,6 +23,7 @@ import {
 } from "#/components/ui/select";
 import { logoutDashboard } from "#/lib/api";
 import { assignLocation } from "#/lib/navigation";
+import { readThemePreference, setThemePreference, type ThemePreference } from "#/lib/theme";
 import { cn } from "#/lib/utils";
 
 export type DashboardTab = "board" | "bugs" | "analytics" | "settings" | "projects";
@@ -31,8 +41,46 @@ function navClass(isActive: boolean) {
   return cn(
     "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
     isActive
-      ? "bg-white/10 text-white"
-      : "text-neutral-500 hover:bg-white/5 hover:text-white",
+      ? "bg-foreground/10 text-foreground"
+      : "text-muted-foreground/80 hover:bg-foreground/5 hover:text-foreground",
+  );
+}
+
+const themeOptions = [
+  { value: "system", label: "System", Icon: Monitor },
+  { value: "light", label: "Light", Icon: Sun },
+  { value: "dark", label: "Dark", Icon: Moon },
+] as const;
+
+function ThemeToggle() {
+  const [preference, setPreference] = useState<ThemePreference>("system");
+  // Read after mount so the server render and hydration agree.
+  useEffect(() => setPreference(readThemePreference()), []);
+
+  return (
+    <div role="group" aria-label="Theme" className="mt-3 flex rounded-md border border-border p-0.5">
+      {themeOptions.map(({ value, label, Icon }) => (
+        <button
+          key={value}
+          type="button"
+          aria-pressed={preference === value}
+          title={label}
+          onClick={() => {
+            setThemePreference(value);
+            setPreference(value);
+          }}
+          className={cn(
+            "flex min-w-0 flex-1 items-center justify-center gap-1 rounded px-1 py-1 text-xs transition-colors",
+            preference === value
+              ? "bg-foreground/10 text-foreground"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          <Icon className="size-3.5" aria-hidden />
+          {label}
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -79,7 +127,7 @@ export function DashboardPageHeader({
 }) {
   return (
     <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <h1 className="text-lg font-medium tracking-tight text-white">{title}</h1>
+      <h1 className="text-lg font-medium tracking-tight text-foreground">{title}</h1>
       {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
     </header>
   );
@@ -103,21 +151,21 @@ export function DashboardChrome({
       : undefined;
 
   return (
-    <main className="min-h-screen bg-black text-neutral-100">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="grid min-h-screen lg:grid-cols-[240px_minmax(0,1fr)]">
-        <aside className="flex flex-col border-b border-white/10 px-5 py-6 lg:border-b-0 lg:border-r">
+        <aside className="flex flex-col border-b border-border px-5 py-6 lg:border-b-0 lg:border-r">
           <Link to="/dashboard/projects" className="flex items-center gap-2">
             <img
               src="/openwish-icon-dark-192.png"
               alt=""
               className="size-7 rounded-md"
             />
-            <span className="text-sm font-medium tracking-tight text-white">OpenWish</span>
+            <span className="text-sm font-medium tracking-tight text-foreground">OpenWish</span>
           </Link>
 
           {projects.length > 0 ? (
             <div className="mt-6 space-y-1.5">
-              <p className="text-[11px] uppercase tracking-wider text-neutral-500">
+              <p className="text-[11px] uppercase tracking-wider text-muted-foreground/80">
                 Project
               </p>
               <Select
@@ -126,11 +174,11 @@ export function DashboardChrome({
               >
                 <SelectTrigger
                   size="sm"
-                  className="h-9 w-full border-white/10 bg-neutral-950 text-sm text-neutral-100"
+                  className="h-9 w-full border-border bg-card text-sm text-foreground"
                 >
                   <SelectValue placeholder={projectName ?? "Select project"} />
                 </SelectTrigger>
-                <SelectContent className="border-white/10 bg-neutral-950 text-neutral-100">
+                <SelectContent className="border-border bg-card text-foreground">
                   {projects.map((project) => (
                     <SelectItem key={project.slug} value={project.slug}>
                       <span className="flex items-center gap-2">
@@ -138,7 +186,7 @@ export function DashboardChrome({
                           <img
                             src={project.appIconUrl}
                             alt=""
-                            className="size-4 rounded-sm border border-white/10"
+                            className="size-4 rounded-sm border border-border"
                           />
                         ) : null}
                         {project.name}
@@ -173,13 +221,14 @@ export function DashboardChrome({
             </Link>
           </nav>
 
-          <div className="mt-8 border-t border-white/10 pt-4">
-            <p className="text-[11px] uppercase tracking-wider text-neutral-500">Session</p>
-            <p className="mt-2 truncate text-sm text-white">{sessionUsername || "admin"}</p>
+          <div className="mt-8 border-t border-border pt-4">
+            <p className="text-[11px] uppercase tracking-wider text-muted-foreground/80">Session</p>
+            <p className="mt-2 truncate text-sm text-foreground">{sessionUsername || "admin"}</p>
+            <ThemeToggle />
             <Button
               variant="outline"
               size="sm"
-              className="mt-3 w-full border-white/10 bg-transparent text-neutral-300 hover:bg-white/5 hover:text-white"
+              className="mt-3 w-full border-border bg-transparent text-foreground/80 hover:bg-foreground/5 hover:text-foreground"
               onClick={async () => {
                 try {
                   await logoutDashboard();

@@ -44,11 +44,11 @@ export function NotificationSettings({
         value={draft}
         onChange={(event) => setDraft(event.target.value)}
         placeholder="you@example.com"
-        className="h-8 max-w-72 border-white/10 bg-neutral-900 text-sm text-neutral-100"
+        className="h-8 max-w-72 border-border bg-muted text-sm text-foreground"
       />
       <Button
         size="sm"
-        className="bg-white text-black hover:bg-neutral-200"
+        className="bg-primary text-primary-foreground hover:bg-primary/90"
         disabled={!dirty || isSaving}
         onClick={async () => {
           setIsSaving(true);
@@ -79,7 +79,7 @@ export function NotificationSettings({
       <Button
         size="sm"
         variant="outline"
-        className="border-white/10 bg-transparent text-neutral-300 hover:bg-white/5 hover:text-white"
+        className="border-border bg-transparent text-foreground/80 hover:bg-foreground/5 hover:text-foreground"
         disabled={trimmed === "" || isSending}
         onClick={async () => {
           if (trimmed === "") {
@@ -128,11 +128,11 @@ export function PublicFormSettings({
 
   return (
     <SettingsRow label="Public feedback form">
-      <div className="inline-flex items-center gap-2 rounded-md border border-white/10 bg-neutral-900 px-2.5 py-1 text-xs text-neutral-300">
+      <div className="inline-flex items-center gap-2 rounded-md border border-border bg-muted px-2.5 py-1 text-xs text-foreground/80">
         <Switch
           checked={enabled}
           disabled={isSaving}
-          className="data-unchecked:bg-neutral-600"
+          className="data-unchecked:bg-foreground/30"
           onCheckedChange={async (checked) => {
             setIsSaving(true);
             setStatus(null);
@@ -167,13 +167,13 @@ export function PublicFormSettings({
           <Input
             value={publicUrl}
             readOnly
-            className="h-8 max-w-80 border-white/10 bg-neutral-900 text-sm text-neutral-300"
+            className="h-8 max-w-80 border-border bg-muted text-sm text-foreground/80"
             onFocus={(event) => event.currentTarget.select()}
           />
           <Button
             size="sm"
             variant="outline"
-            className="border-white/10 bg-transparent text-neutral-300 hover:bg-white/5 hover:text-white"
+            className="border-border bg-transparent text-foreground/80 hover:bg-foreground/5 hover:text-foreground"
             onClick={async () => {
               try {
                 await navigator.clipboard.writeText(publicUrl);
@@ -191,8 +191,8 @@ export function PublicFormSettings({
           </Button>
         </>
       ) : (
-        <span className="text-xs text-neutral-500">
-          Enable to expose <code className="text-neutral-400">/feedback/{slug}</code> for App Store support links.
+        <span className="text-xs text-muted-foreground/80">
+          Enable to expose <code className="text-muted-foreground">/feedback/{slug}</code> for App Store support links.
         </span>
       )}
       <StatusText status={status} />
@@ -230,7 +230,7 @@ export function AppLinkSettings({
         <img
           src={appIconUrl}
           alt={appName ? `${appName} icon` : "App icon"}
-          className="size-8 rounded-md border border-white/10"
+          className="size-8 rounded-md border border-border"
         />
       ) : null}
       <Input
@@ -238,11 +238,11 @@ export function AppLinkSettings({
         value={draft}
         onChange={(event) => setDraft(event.target.value)}
         placeholder="https://apps.apple.com/us/app/your-app/id123456789"
-        className="h-8 max-w-96 border-white/10 bg-neutral-900 text-sm text-neutral-100"
+        className="h-8 max-w-96 border-border bg-muted text-sm text-foreground"
       />
       <Button
         size="sm"
-        className="bg-white text-black hover:bg-neutral-200"
+        className="bg-primary text-primary-foreground hover:bg-primary/90"
         disabled={!dirty || isSaving}
         onClick={async () => {
           setIsSaving(true);
@@ -276,7 +276,7 @@ export function AppLinkSettings({
         {isSaving ? "Saving…" : "Save"}
       </Button>
       {appName && !dirty ? (
-        <span className="text-xs text-neutral-400">{appName}</span>
+        <span className="text-xs text-muted-foreground">{appName}</span>
       ) : null}
       <StatusText status={status} />
     </SettingsRow>
@@ -291,8 +291,8 @@ function SettingsRow({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-md border border-white/10 bg-neutral-950 px-4 py-3">
-      <span className="text-[11px] uppercase tracking-wider text-neutral-500">
+    <div className="flex flex-wrap items-center gap-2 rounded-md border border-border bg-card px-4 py-3">
+      <span className="text-[11px] uppercase tracking-wider text-muted-foreground/80">
         {label}
       </span>
       {children}
@@ -306,7 +306,7 @@ function StatusText({ status }: { status: Status | null }) {
     <span
       className={cn(
         "text-xs",
-        status.kind === "error" ? "text-red-300" : "text-neutral-400",
+        status.kind === "error" ? "text-red-700 dark:text-red-300" : "text-muted-foreground",
       )}
     >
       {status.message}

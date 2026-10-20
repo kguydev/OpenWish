@@ -1,0 +1,52 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "openwish",
+  "account_id": "84c19dfbc4c5f59e8db42a66d89033fb",
+  "compatibility_date": "2026-04-09",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "main": "src/server.ts",
+  "durable_objects": {
+    "bindings": [
+      { "name": "MCP_OAUTH_STATE", "class_name": "OpenWishOAuthState" }
+    ]
+  },
+  "migrations": [
+    { "tag": "mcp-oauth-v1", "new_sqlite_classes": ["OpenWishOAuthState"] }
+  ],
+  "routes": [
+    { "pattern": "feedback.babybuddy.app", "custom_domain": true }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "openwish",
+      "database_id": "b76f5e72-62cd-415a-b128-78494651709f",
+      "migrations_dir": "./migrations"
+    }
+  ],
+  // R2 is not enabled on this account yet. Once it is, run
+  // `wrangler r2 bucket create openwish-bugs` and restore this binding:
+  // "r2_buckets": [{ "binding": "BUGS_BUCKET", "bucket_name": "openwish-bugs" }],
+  "kv_namespaces": [
+    {
+      "binding": "RATE_LIMIT_KV",
+      "id": "832ccaf3635a42d58554b482ab0b0346"
+    }
+  ],
+  // Admin notifications only, over Email Routing. Reporter emails (Cloudflare
+  // Email Service) are deliberately not configured.
+  "send_email": [
+    {
+      "name": "NOTIFICATION_EMAIL"
+    }
+  ],
+  "vars": {
+    "OPENWISH_MCP_OAUTH_ORIGIN": "https://feedback.babybuddy.app",
+    "OPENWISH_CORS_ORIGIN": "https://feedback.babybuddy.app",
+    "OPENWISH_NOTIFICATION_FROM": "noreply@babybuddy.app",
+    "OPENWISH_DASHBOARD_URL": "https://feedback.babybuddy.app",
+    "OPENWISH_PASSKEY_RP_ID": "feedback.babybuddy.app",
+    "OPENWISH_PASSKEY_RP_NAME": "Baby Buddy Feedback",
+    "OPENWISH_TURNSTILE_SITE_KEY": "0x4AAAAAAFciKh0Pe4mPfoni"
+  }
+}

@@ -46,6 +46,15 @@ struct WishView: View {
     @State
     private var voteButtonOpacity: CGFloat = 1
 
+    @State
+    private var translatedTitle: String?
+
+    @State
+    private var translatedDescription: String?
+
+    @State
+    private var isShowingTranslation = false
+
     private let wishResponse: WishResponse
 
     private let voteActionCompletion: () -> Void
@@ -137,7 +146,7 @@ struct WishView: View {
 
             VStack(spacing: 5) {
                 HStack {
-                    Text(wishResponse.title)
+                    Text(displayedTitle)
                         .foregroundColor(textColor)
                         .font(.body)
                         .fontWeight(.semibold)
@@ -158,19 +167,42 @@ struct WishView: View {
                 }
 
                 HStack {
-                    Text(wishResponse.description)
+                    Text(displayedDescription)
                         .foregroundColor(textColor)
                         .font(.footnote)
                         .multilineTextAlignment(.leading)
                         .lineLimit(descriptionLineLimit)
                     Spacer()
                 }
+
+                #if os(iOS) && canImport(Translation)
+                if #available(iOS 18.0, *) {
+                    HStack {
+                        WishTranslateSection(
+                            title: wishResponse.title,
+                            description: wishResponse.description,
+                            translatedTitle: $translatedTitle,
+                            translatedDescription: $translatedDescription,
+                            isShowingTranslation: $isShowingTranslation
+                        )
+                        Spacer()
+                    }
+                }
+                #endif
             }
         }
         .padding([.top, .bottom, .trailing], 10)
         .background(backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: OpenWish.config.cornerRadius, style: .continuous))
         .wkShadow()
+    }
+
+    private var displayedTitle: String {
+        isShowingTranslation ? (translatedTitle ?? wishResponse.title) : wishResponse.title
+    }
+
+    private var displayedDescription: String {
+        isShowingTranslation ? (translatedDescription ?? wishResponse.description) : wishResponse.description
     }
 
     func badgeColor(for wishState: WishState) -> Color {

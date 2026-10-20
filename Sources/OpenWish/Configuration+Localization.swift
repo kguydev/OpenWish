@@ -106,6 +106,10 @@ extension Configuration {
 
         public var retry: String
 
+        public var seeTranslation: String
+
+        public var seeOriginal: String
+
         public init(
             requested: String = Localization.default().requested,
             pending: String = Localization.default().pending,
@@ -154,7 +158,9 @@ extension Configuration {
             refreshing: String = Localization.default().refreshing,
             addFeatureRequest: String = Localization.default().addFeatureRequest,
             couldNotLoadFeatureRequests: String = Localization.default().couldNotLoadFeatureRequests,
-            retry: String = Localization.default().retry
+            retry: String = Localization.default().retry,
+            seeTranslation: String = Localization.default().seeTranslation,
+            seeOriginal: String = Localization.default().seeOriginal
         ) {
             self.requested = requested
             self.pending = pending
@@ -204,6 +210,8 @@ extension Configuration {
             self.addFeatureRequest = addFeatureRequest
             self.couldNotLoadFeatureRequests = couldNotLoadFeatureRequests
             self.retry = retry
+            self.seeTranslation = seeTranslation
+            self.seeOriginal = seeOriginal
         }
 
         public static func `default`() -> Localization {
@@ -255,7 +263,9 @@ extension Configuration {
                 refreshing: "Refreshing..",
                 addFeatureRequest: "Add a feature request",
                 couldNotLoadFeatureRequests: "Couldn't load feature requests",
-                retry: "Retry"
+                retry: "Retry",
+                seeTranslation: "See translation",
+                seeOriginal: "See original"
             )
         }
     }

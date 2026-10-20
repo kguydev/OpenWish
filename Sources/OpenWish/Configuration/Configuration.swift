@@ -31,6 +31,10 @@ public struct Configuration {
     
     public var allowUndoVote: Bool = false
 
+    /// Shows a "See translation" text button on feedback written in a different
+    /// language than the app's, translating it on-device (iOS 18+).
+    public var translateButton: TranslateButton = .automatic
+
     init(
         statusBadgeDisplay: Display = .hide,
         localization: Localization = .default()

@@ -139,7 +139,7 @@ struct WishView: View {
                 HStack {
                     Text(wishResponse.title)
                         .foregroundColor(textColor)
-                        .font(.system(size: 17))
+                        .font(.body)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.leading)
                         .lineLimit(viewKind == .list ? 1 : nil)
@@ -149,7 +149,7 @@ struct WishView: View {
                     if viewKind == .list && OpenWish.config.statusBadge == .show {
                         Text(wishResponse.state.description.uppercased())
                             .opacity(0.8)
-                            .font(.system(size: 10, weight: .medium))
+                            .font(.caption2.weight(.medium))
                             .padding(EdgeInsets(top: 3, leading: 5, bottom: 3, trailing: 5))
                             .foregroundColor(.primary)
                             .background(badgeColor(for: wishResponse.state).opacity(1/3))
@@ -160,7 +160,7 @@ struct WishView: View {
                 HStack {
                     Text(wishResponse.description)
                         .foregroundColor(textColor)
-                        .font(.system(size: 13))
+                        .font(.footnote)
                         .multilineTextAlignment(.leading)
                         .lineLimit(descriptionLineLimit)
                     Spacer()

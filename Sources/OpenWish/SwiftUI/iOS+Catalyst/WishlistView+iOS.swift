@@ -77,16 +77,21 @@ struct WishlistViewIOS: View {
         return rootViewController is UITabBarController
     }
 
+    // The button sits inside the safe area, so the home indicator and any tab
+    // bar are already cleared. This is only the extra gap above them.
     private var addButtonBottomPadding: CGFloat {
-        let basePadding: CGFloat = isInTabBar ? 80 : 30
         switch OpenWish.config.buttons.addButton.bottomPadding {
         case .small:
-            return basePadding + 15
+            return 15
         case .medium:
-            return basePadding + 30
+            return 30
         case .large:
-            return basePadding + 60
+            return 60
         }
+    }
+
+    private var showsError: Bool {
+        wishModel.errorMessage != nil && wishModel.fullList.isEmpty && !wishModel.isLoading
     }
 
     private var feedbackStateSelection: [LocalWishState] {
@@ -151,8 +156,10 @@ struct WishlistViewIOS: View {
                     .imageScale(.large)
             }
 
-            if wishModel.hasFetched && !wishModel.isLoading && getList().isEmpty {
+            if wishModel.hasFetched && !wishModel.isLoading && !showsError && getList().isEmpty {
                 Text("\(selectedWishState.description): \(OpenWish.config.localization.noFeatureRequests)")
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
             }
 
             ScrollView {
@@ -182,6 +189,24 @@ struct WishlistViewIOS: View {
 
                     Spacer(minLength: 15)
 
+                    // Inside the scroll view so pull to refresh still works here.
+                    if showsError, let message = wishModel.errorMessage {
+                        VStack(spacing: 8) {
+                            Text(OpenWish.config.localization.couldNotLoadFeatureRequests)
+                                .font(.headline)
+                            Text(message)
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                            Button(OpenWish.config.localization.retry) {
+                                wishModel.fetchList()
+                            }
+                            .padding(.top, 4)
+                        }
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                        .padding(.top, 60)
+                    }
+
                     if getList().count > 0 {
                         ForEach(getList()) { wish in
                             NavigationLink(destination: {
@@ -199,6 +224,7 @@ struct WishlistViewIOS: View {
             }
             .refreshableCompat(action: { await wishModel.fetchList() })
             .padding([.leading, .bottom, .trailing])
+            .ignoresSafeArea(edges: [.leading, .bottom, .trailing])
 
 
             if OpenWish.config.buttons.addButton.location == .floating {
@@ -224,8 +250,7 @@ struct WishlistViewIOS: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .background(backgroundColor)
-        .ignoresSafeArea(edges: [.leading, .bottom, .trailing])
+        .background(backgroundColor.ignoresSafeArea())
         .navigationTitle(OpenWish.config.localization.featureWishlist)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -236,7 +261,7 @@ struct WishlistViewIOS: View {
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(.primary)
                 }
-                .accessibilityLabel("Close")
+                .accessibilityLabel(Text(OpenWish.config.localization.close))
             }
 
             ToolbarItem(placement: .topBarTrailing) {
@@ -286,9 +311,9 @@ private struct FilterChip: View {
         Button(action: action) {
             HStack(spacing: 6) {
                 Text(title)
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.subheadline.weight(.medium))
                 Text("\(count)")
-                    .font(.system(size: 12, weight: .semibold))
+                    .font(.caption.weight(.semibold))
                     .foregroundColor(countTextColor)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
@@ -308,53 +333,38 @@ private struct FilterChip: View {
             .contentShape(Capsule())
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("\(title), \(count)"))
+        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 
     private var primary: Color {
         OpenWish.theme.primaryColor
     }
 
+    private var segmentedControl: Configuration.SegmentedControl {
+        OpenWish.config.buttons.segmentedControl
+    }
+
     private var textColor: Color {
-        if isSelected {
-            return colorScheme == .dark ? .black : .white
-        }
-        return colorScheme == .dark ? .white : .black
+        let scheme = isSelected ? segmentedControl.activeTextColor : segmentedControl.defaultTextColor
+        return colorScheme == .dark ? scheme.dark : scheme.light
     }
 
     private var backgroundColor: Color {
-        if isSelected {
-            return primary
-        }
-        return Color.clear
+        isSelected ? primary : .clear
     }
 
     private var borderColor: Color {
-        if isSelected {
-            return .clear
-        }
-        return colorScheme == .dark
-            ? Color.white.opacity(0.18)
-            : Color.black.opacity(0.12)
+        isSelected ? .clear : Color.primary.opacity(0.15)
     }
 
     private var countBadgeColor: Color {
-        if isSelected {
-            return colorScheme == .dark
-                ? Color.black.opacity(0.18)
-                : Color.white.opacity(0.22)
-        }
-        return colorScheme == .dark
-            ? Color.white.opacity(0.12)
-            : Color.black.opacity(0.06)
+        isSelected ? textColor.opacity(0.22) : Color.primary.opacity(0.08)
     }
 
     private var countTextColor: Color {
-        if isSelected {
-            return colorScheme == .dark ? .black : .white
-        }
-        return colorScheme == .dark
-            ? Color.white.opacity(0.9)
-            : Color.black.opacity(0.7)
+        isSelected ? textColor : textColor.opacity(0.8)
     }
 }
 

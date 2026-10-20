@@ -54,6 +54,11 @@ final class WishModel: ObservableObject {
     @Published
     var hasFetched: Bool = false
 
+    /// Why the last fetch failed, or nil after a successful one. Lets the list
+    /// tell a failed fetch apart from a genuinely empty board.
+    @Published
+    var errorMessage: String? = nil
+
     @MainActor
     func fetchList(completion: (() -> ())? = nil) {
         isLoading = true
@@ -68,9 +73,13 @@ final class WishModel: ObservableObject {
                     self.updateAllLists(with: visibleList)
                     self.shouldShowWatermark = response.shouldShowWatermark
                     self.fullList = visibleList
+                    self.errorMessage = nil
                 }
             case .failure(let error):
                 printError(self, error.reason.description)
+                DispatchQueue.main.async {
+                    self.errorMessage = error.reason.description
+                }
             }
 
             DispatchQueue.main.async {

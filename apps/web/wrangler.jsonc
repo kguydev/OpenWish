@@ -24,9 +24,12 @@
       "migrations_dir": "./migrations"
     }
   ],
-  // R2 is not enabled on this account yet. Once it is, run
-  // `wrangler r2 bucket create openwish-bugs` and restore this binding:
-  // "r2_buckets": [{ "binding": "BUGS_BUCKET", "bucket_name": "openwish-bugs" }],
+  "r2_buckets": [
+    {
+      "binding": "BUGS_BUCKET",
+      "bucket_name": "openwish-bugs"
+    }
+  ],
   "kv_namespaces": [
     {
       "binding": "RATE_LIMIT_KV",
